@@ -258,7 +258,7 @@
         <span class="icon">▾</span>
       </button>
       <nav class="nav-menu" id="navMenu" aria-label="Primary navigation">
-        <a href="legend.html#legend" onclick="toggleNav()">The Legend</a>
+        <a href="legend.html#legend" onclick="closeNav()">The Legend</a>
         <a href="#chronicles">Chronicles</a>
         <a href="#weapons">Weapons</a>
         <a href="#contact">Contact</a>
@@ -321,6 +321,11 @@
     function toggleNav() {
       var menu = document.getElementById("navMenu");
       menu.classList.toggle("open");
+    }
+
+    function closeNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.remove("open");
     }
 
     document.addEventListener("click", function (e) {
