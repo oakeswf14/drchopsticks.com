@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dr. Chopsticks – Chronicles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-color: #050608;
+      --accent-red: #c62828;
+      --accent-gold: #fdd835;
+      --text-main: #f5f5f5;
+      --text-muted: #b0bec5;
+      --panel-bg: rgba(12, 12, 16, 0.92);
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #121212 0, #050608 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 6vw;
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 6, 8, 0.98),
+        rgba(5, 6, 8, 0.75),
+        transparent
+      );
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid rgba(253, 216, 53, 0.5);
+      box-shadow: 0 0 18px rgba(253, 216, 53, 0.25);
+    }
+
+    .brand-text h1 {
+      font-size: 1.2rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+    }
+
+    /* Navigation dropdown */
+    .nav-wrapper {
+      position: relative;
+    }
+
+    .nav-toggle {
+      background: rgba(7, 8, 10, 0.8);
+      border: 1px solid var(--border-soft);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-toggle span.icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      min-width: 190px;
+      background: var(--panel-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      display: none;
+      overflow: hidden;
+    }
+
+    .nav-menu.open {
+      display: block;
+    }
+
+    .nav-menu a {
+      display: block;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.18s ease, color 0.18s ease;
+      background: transparent;
+    }
+
+    .nav-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .nav-menu a:hover {
+      background: rgba(198, 40, 40, 0.2);
+      color: var(--accent-gold);
+    }
+
+    /* Main section */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 96px 6vw 72px; /* account for fixed header */
+    }
+
+    .hero {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .hero-content {
+      background: var(--panel-bg);
+      border-radius: 24px;
+      padding: 32px 30px 28px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(198, 40, 40, 0.14), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(253, 216, 53, 0.06), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--accent-gold);
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      line-height: 1.08;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span.red {
+      color: var(--accent-red);
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    .hero-blurb h3 {
+      font-size: 1rem;
+      margin: 22px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-gold);
+    }
+
+    .hero-blurb h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .hero-blurb p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(224, 224, 224, 0.92);
+      margin-bottom: 10px;
+    }
+
+    .hero-blurb p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Images / Chronicles shots */
+    .image-block {
+      margin: 18px 0 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.7);
+      background: radial-gradient(circle at top, #1a1a1a, #050607);
+    }
+
+    .image-block img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .image-caption {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(245, 245, 245, 0.85);
+      padding: 8px 12px 10px;
+      text-align: center;
+      background: radial-gradient(circle at top, rgba(0, 0, 0, 0.6), transparent 70%);
+    }
+
+    /* Footer */
+    footer {
+      padding: 12px 6vw 18px;
+      font-size: 0.8rem;
+      text-align: center;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(176, 190, 197, 0.95);
+      border-top: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), transparent 70%);
+    }
+
+    footer strong {
+      color: var(--accent-red);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Logo spot (upper left) and navigation dropdown (upper right) -->
+  <header>
+    <!-- Logo clickable back to main page -->
+    <a href="index.html" class="brand">
+      <img src="Logo.jpg" alt="Dr. Chopsticks Logo" />
+      <div class="brand-text">
+        <h1>Dr. Chopsticks</h1>
+      </div>
+    </a>
+
+    <div class="nav-wrapper">
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span>Menu</span>
+        <span class="icon">▾</span>
+      </button>
+      <nav class="nav-menu" id="navMenu" aria-label="Primary navigation">
+        <a href="index.html#legend" onclick="closeNav()">The Legend</a>
+        <a href="chronicles.html" onclick="closeNav()">Chronicles</a>
+        <a href="weapons.html" onclick="closeNav()">Weapons</a>
+        <a href="index.html#contact" onclick="closeNav()">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Chronicles Page Content -->
+  <main>
+    <section class="hero" id="chronicles">
+      <div class="hero-content">
+        <div class="hero-inner">
+          <div class="hero-kicker">Battles • Buffets • Brotherhood</div>
+
+          <h2 class="hero-title">
+            <span class="red">Chronicles</span><br />
+            Of Dr. Chopsticks
+          </h2>
+
+          <p class="hero-subtitle">
+            Feats, Fights & Truly Questionable Life Choices
+          </p>
+
+          <!-- Epic battlefield shot -->
+          <div class="image-block">
+            <img
+              src="images/chronicles-01.jpg"
+              alt="Epic shot of Dr. Chopsticks on the battlefield with glowing chopsticks"
+            />
+            <div class="image-caption">
+              Dr. Chopsticks • Alone On The Battlefield, Armed With Only Two Sticks
+            </div>
+          </div>
+
+          <div class="hero-blurb">
+            <h3>Episode I: The Battlefield Gourmet</h3>
+
+            <p>
+              Before the world knew him as the Ziti Samurai, Dr. Chopsticks was a
+              rumor in the smoke—an odd silhouette on distant rooftops, the first and
+              last thing villains saw before their henchmen mysteriously slipped on
+              spilled noodles. In the chaos of neon‑lit battles and midnight ambushes,
+              he moved with surprising grace for someone who always seemed one snack
+              break away from a food coma.
+            </p>
+
+            <p>
+              On the great night of the Dumpling Uprising, he stood alone between the
+              city and a legion of deep‑fried chaos. Twin beams of energy crackled in
+              his hands, carving through the dark like chopsticks through steamed
+              buns. When the dust settled, the only things left standing were Dr.
+              Chopsticks… and a single untouched tray of baked ziti in the corner.
+            </p>
+
+            <h3>Episode II: Training Day (And Night… And Snack Break)</h3>
+
+            <!-- Training dummy shot -->
+            <div class="image-block">
+              <img
+                src="images/chronicles-02.jpg"
+                alt="Dr. Chopsticks training against a dummy with his energy chopsticks"
+              />
+              <div class="image-caption">
+                Refining His Form • The Dummy Did Not Survive
+              </div>
+            </div>
+
+            <p>
+              Power without practice is just a very loud way to ruin dinner. Knowing
+              this, Dr. Chopsticks committed to training: not in distant mountains or
+              secret dojos, but in the one place that truly tested his resolve—a
+              cramped apartment living room, three inches from the coffee table and
+              directly beneath a very nervous landlord.
+            </p>
+
+            <p>
+              He sliced through training dummies, cardboard boxes, and the occasional
+              unlucky coat rack, learning to control the fine line between
+              “perfectly seared” and “unrecognizable ash.” Each swipe of his Energy
+              Chopsticks hummed with purpose: defend the innocent, preserve balance,
+              and absolutely never spill the sauce.
+            </p>
+
+            <!-- Training montage -->
+            <div class="image-block">
+              <img
+                src="images/chronicles-03.jpg"
+                alt="Training montage of Dr. Chopsticks honing his energy chopstick skills"
+              />
+              <div class="image-caption">
+                Montage Mode • A Thousand Misfires, One Legendary Technique
+              </div>
+            </div>
+
+            <p>
+              The montage years were brutal: noodles vaporized mid‑air, wooden
+              practice targets cleaved in half, and one truly regrettable incident
+              with a microwave burrito. But through countless missteps and midnight
+              snacks, he forged a fighting style that was equal parts elegance,
+              improvisation, and anime reference.
+            </p>
+
+            <h3>Episode III: The Lanky Leaf Arrives</h3>
+
+            <p>
+              Then came the night of the Seven‑Refill Soda Spill, when Dr. Chopsticks
+              first crossed paths with the only warrior who could match his appetite
+              and his flair for the dramatic: a seven‑foot‑tall ginger ninja clad in
+              green and yellow, known only as <strong>The Lanky Leaf</strong>.
+            </p>
+
+            <p>
+              The Lanky Leaf moved like a bamboo stalk in a hurricane—long, flexible,
+              and absolutely impossible to ignore. Their first meeting was not a
+              handshake. It was a flying kick, a deflected chopstick strike, and an
+              argument over who had “dibs” on the last plate of ziti at an all‑night
+              buffet.
+            </p>
+
+            <!-- Fight with The Lanky Leaf -->
+            <div class="image-block">
+              <img
+                src="images/chronicles-04.jpg"
+                alt="Dr. Chopsticks locked in battle with The Lanky Leaf"
+              />
+              <div class="image-caption">
+                Rivals Collide • Energy Chopsticks Versus Emerald Fury
+              </div>
+            </div>
+
+            <p>
+              Their battle tore through tables, chairs, and at least three “Now
+              Hiring” signs. Yet as their clash reached its peak, both warriors
+              noticed something: the anime playing silently on the TV behind the bar
+              was one of their mutual favorites. A single shared gasp at the season
+              finale twist brought all hostilities to an awkward halt.
+            </p>
+
+            <p>
+              Moments later, they were seated side by side, breathing heavily,
+              chopsticks in hand, arguing over power levels and whether a certain
+              protagonist’s plot armor had gone too far. The last plate of ziti was
+              split down the middle with surgical precision. A rivalry had ended. A
+              partnership had begun.
+            </p>
+
+            <h3>Episode IV: Dorks In Arms</h3>
+
+            <p>
+              United by their love of anime, over‑analysis, and being unapologetic
+              dorks, Dr. Chopsticks and The Lanky Leaf became an unlikely duo. Where
+              Dr. Chopsticks brought focused energy beams and encyclopedic knowledge
+              of shounen tropes, The Lanky Leaf contributed acrobatic chaos and a
+              suspiciously detailed understanding of obscure filler episodes.
+            </p>
+
+            <p>
+              By night, they defended alleyways, buffets, and late‑night diners from
+              culinary injustice. By day, they debated tier lists, traded fan theories,
+              and co‑wrote extremely specific crossover headcanons no one had asked
+              for. The city learned to breathe easier—if only because its villains
+              were too confused to function.
+            </p>
+
+            <!-- Manga-style cover of their friendship -->
+            <div class="image-block">
+              <img
+                src="images/chronicles-05.jpg"
+                alt="Manga cover style illustration of Dr. Chopsticks and The Lanky Leaf as friends"
+              />
+              <div class="image-caption">
+                Dr. Chopsticks & The Lanky Leaf • Volume 1: Dorks Unite
+              </div>
+            </div>
+
+            <p>
+              The chronicles of Dr. Chopsticks are still being written: in every
+              new fusion restaurant opening at 2 a.m., in every anime binge that
+              accidentally lasts three days, and in every villain who severely
+              underestimates a hero armed with nothing but glowing chopsticks and an
+              unshakable craving for cheesy ziti.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <strong>Two Sticks. One Legend</strong>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.toggle("open");
+    }
+
+    function closeNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.remove("open");
+    }
+
+    // Close menu on outside click
+    document.addEventListener("click", function (e) {
+      var menu = document.getElementById("navMenu");
+      var toggle = document.querySelector(".nav-toggle");
+
+      if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+  </script>
+</body>
+</html>
