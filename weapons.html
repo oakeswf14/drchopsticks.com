@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dr. Chopsticks – Weapons</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-color: #050608;
+      --accent-red: #c62828;
+      --accent-gold: #fdd835;
+      --text-main: #f5f5f5;
+      --text-muted: #b0bec5;
+      --panel-bg: rgba(12, 12, 16, 0.92);
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #121212 0, #050608 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 6vw;
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 6, 8, 0.98),
+        rgba(5, 6, 8, 0.75),
+        transparent
+      );
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid rgba(253, 216, 53, 0.5);
+      box-shadow: 0 0 18px rgba(253, 216, 53, 0.25);
+    }
+
+    .brand-text h1 {
+      font-size: 1.2rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+    }
+
+    /* Navigation dropdown */
+    .nav-wrapper {
+      position: relative;
+    }
+
+    .nav-toggle {
+      background: rgba(7, 8, 10, 0.8);
+      border: 1px solid var(--border-soft);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-toggle span.icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      min-width: 190px;
+      background: var(--panel-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      display: none;
+      overflow: hidden;
+    }
+
+    .nav-menu.open {
+      display: block;
+    }
+
+    .nav-menu a {
+      display: block;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.18s ease, color 0.18s ease;
+      background: transparent;
+    }
+
+    .nav-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .nav-menu a:hover {
+      background: rgba(198, 40, 40, 0.2);
+      color: var(--accent-gold);
+    }
+
+    /* Main section */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 96px 6vw 72px; /* account for fixed header */
+    }
+
+    .hero {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .hero-content {
+      background: var(--panel-bg);
+      border-radius: 24px;
+      padding: 32px 30px 28px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(198, 40, 40, 0.14), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(253, 216, 53, 0.06), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--accent-gold);
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      line-height: 1.08;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span.red {
+      color: var(--accent-red);
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    .hero-blurb h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-gold);
+    }
+
+    .hero-blurb p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(224, 224, 224, 0.92);
+      margin-bottom: 10px;
+    }
+
+    .hero-blurb p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Images */
+    .image-block {
+      margin: 18px 0 24px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.7);
+      background: radial-gradient(circle at top, #1a1a1a, #050607);
+    }
+
+    .image-block img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .image-caption {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(245, 245, 245, 0.85);
+      padding: 8px 12px 10px;
+      text-align: center;
+      background: radial-gradient(circle at top, rgba(0, 0, 0, 0.6), transparent 70%);
+    }
+
+    /* Footer */
+    footer {
+      padding: 12px 6vw 18px;
+      font-size: 0.8rem;
+      text-align: center;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(176, 190, 197, 0.95);
+      border-top: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), transparent 70%);
+    }
+
+    footer strong {
+      color: var(--accent-red);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Logo spot (upper left) and navigation dropdown (upper right) -->
+  <header>
+    <!-- Logo clickable back to main page -->
+    <a href="index.html" class="brand">
+      <img src="Logo.jpg" alt="Dr. Chopsticks Logo" />
+      <div class="brand-text">
+        <h1>Dr. Chopsticks</h1>
+      </div>
+    </a>
+
+    <div class="nav-wrapper">
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span>Menu</span>
+        <span class="icon">▾</span>
+      </button>
+      <nav class="nav-menu" id="navMenu" aria-label="Primary navigation">
+        <a href="index.html#legend" onclick="closeNav()">The Legend</a>
+        <a href="index.html#chronicles" onclick="closeNav()">Chronicles</a>
+        <a href="weapons.html" onclick="closeNav()">Weapons</a>
+        <a href="index.html#contact" onclick="closeNav()">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Weapons Page Content -->
+  <main>
+    <section class="hero" id="weapons">
+      <div class="hero-content">
+        <div class="hero-inner">
+          <div class="hero-kicker">Energy • Precision • Dinnerware</div>
+
+          <h2 class="hero-title">
+            <span class="red">Weapons</span><br />
+            Of Dr. Chopsticks
+          </h2>
+
+          <p class="hero-subtitle">
+            Lightsaber Chopsticks • Built For Battle, Used For Ziti
+          </p>
+
+          <!-- Top blueprint image -->
+          <div class="image-block">
+            <img
+              src="images/weapons-01.jpg"
+              alt="Blueprint and technical drawing of the Energy Chopsticks"
+            />
+            <div class="image-caption">
+              Energy Chopsticks – Prototype Blueprints From Neo‑Sichuan Station
+            </div>
+          </div>
+
+          <div class="hero-blurb">
+            <h3>History of the Energy Chopsticks</h3>
+
+            <p>
+              Long before anyone thought to weaponize dinnerware, a secret order of
+              monk‑engineers in Neo‑Sichuan Station dreamed of a cleaner, more elegant
+              way to eat noodles in zero gravity. Their answer was the Proto‑Stick:
+              a chopstick forged from condensed plasma, humming gently as it sliced
+              through floating broth droplets. It was brilliant—until someone
+              accidentally set the miso on fire.
+            </p>
+
+            <p>
+              Realizing they’d invented something closer to a weapon than a utensil,
+              the order refined their design over centuries. Carbonized dragon bone
+              was replaced with star‑forged alloys. Unstable plasma cores became
+              disciplined “flavor fields” that could sear evil—or a dumpling—with
+              equal precision. Each pair was attuned to its wielder’s energy:
+              righteous warriors produced a steady, noble glow; opportunistic snackers
+              produced a flicker that smelled faintly of garlic.
+            </p>
+
+            <p>
+              These weapons became known as
+              <strong>Energy Chopsticks</strong>—twin beams of contained fury, able to
+              cut through steel, silence a demon, or perfectly bisect a spring roll.
+              Legends tell of battles fought in alleyways where the only light came
+              from twin crimson lines, whistling through the night. The order decreed
+              that only the most disciplined souls, dedicated to defending the weak
+              and preserving balance, would ever wield them.
+            </p>
+
+            <p>
+              Which is precisely why nobody understands how Dr. Chopsticks got his
+              hands on a pair.
+            </p>
+
+            <!-- Close-up image somewhere mid‑page -->
+            <div class="image-block">
+              <img
+                src="images/weapons-02.jpg"
+                alt="Close up shot of glowing Energy Chopsticks"
+              />
+              <div class="image-caption">
+                The Energy Chopsticks – Twin Beams Of Contained Culinary Fury
+              </div>
+            </div>
+
+            <h3>How Dr. Chopsticks Claimed His Weapon</h3>
+
+            <p>
+              According to the most credible sources (all of them unreliable),
+              Dr. Chopsticks did not win his Energy Chopsticks in honorable combat.
+              He won them in a <strong>midnight all‑you‑can‑eat fusion buffet
+              challenge</strong>.
+            </p>
+
+            <p>
+              Deep beneath an unassuming strip mall, behind a door marked
+              “Employees Only” and “Absolutely No Customers Beyond This Point,” lay
+              the hidden trial grounds of the monk‑engineers. They had given up
+              selecting noble warriors centuries ago. Instead, they watched security
+              cameras above the sneeze guard, waiting for one true sign of worthiness:
+              someone who would <em>never</em> let good food go to waste.
+            </p>
+
+            <p>
+              On that fateful night, Dr. Chopsticks arrived. The staff watched in
+              horror and awe as he navigated the buffet with impossible precision:
+              perfect portion control, zero spillage, and an instinctive understanding
+              of optimal sauce absorption. When he balanced seven plates at once
+              without dropping a single noodle, the ceiling tiles opened and the
+              elders descended on an escalator that had never appeared on the fire
+              code.
+            </p>
+
+            <p>
+              “You have passed the Trial of Endless Refills,” they proclaimed.
+              “What is your desire?”
+              <br />
+              “Your cheesiest ziti,” he replied. “And maybe… better chopsticks.”
+            </p>
+
+            <p>
+              With a solemn nod, they presented him with a relic of their order:
+              twin rods of contained starlight, humming with power and smelling
+              faintly of roasted sesame. Thus, completely by accident, Dr. Chopsticks
+              became the first new wielder of Energy Chopsticks in generations.
+            </p>
+
+            <h3>Mastery, Misfires, and Moral Purpose</h3>
+
+            <p>
+              It took <strong>seven years, three scorched aprons, and one small
+              electrical fire</strong> for Dr. Chopsticks to even begin to master his
+              new weapons.
+            </p>
+
+            <p>
+              At first, every attempt to pick up food ended in disaster. Noodles
+              vaporized on contact. Dumplings detonated. One ill‑fated attempt at
+              instant ramen resulted in a perfectly spherical cloud of steam that
+              still haunts local weather radars.
+            </p>
+
+            <p>
+              But slowly, he adapted: he learned to dial the energy down low enough
+              to lift a single grain of rice; to flare the tips just enough to
+              cauterize a slice of eggplant; to twirl the chopsticks in a blur of
+              light, deflecting not bullets or demons, but dangerously aggressive
+              meatballs.
+            </p>
+
+            <p>
+              Originally, the Energy Chopsticks were meant to
+              <strong>defeat evil</strong>, severing corruption at its source and
+              carving a path through darkness. In Dr. Chopsticks’ hands, however,
+              they found a different destiny.
+            </p>
+
+            <p>
+              Now, their luminous blades are used to test the structural integrity of
+              baked ziti crusts, deliver molten cheese from plate to mouth with
+              surgical precision, and illuminate dimly lit restaurants like sacred
+              tasting halls. He still tells himself the mission is the same:
+              protect the innocent, fight injustice, uphold balance.
+            </p>
+
+            <p>
+              It’s just that, in his world, “evil” often takes the form of
+              under‑seasoned sauce, rubbery pasta, or tragically insufficient cheese.
+              The universe forged Energy Chopsticks to battle darkness.
+              Dr. Chopsticks uses them to sample ziti—and somehow, that still feels
+              like a kind of justice.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <strong>Two Sticks. One Legend</strong>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.toggle("open");
+    }
+
+    function closeNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.remove("open");
+    }
+
+    // Close menu on outside click
+    document.addEventListener("click", function (e) {
+      var menu = document.getElementById("navMenu");
+      var toggle = document.querySelector(".nav-toggle");
+
+      if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+  </script>
+</body>
+</html>
