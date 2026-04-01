@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dr. Chopsticks – Legendary Chinese Warrior</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-color: #050608;
+      --accent-red: #c62828;
+      --accent-gold: #fdd835;
+      --text-main: #f5f5f5;
+      --text-muted: #b0bec5;
+      --panel-bg: rgba(12, 12, 16, 0.92);
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #121212 0, #050608 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 6vw;
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 6, 8, 0.98),
+        rgba(5, 6, 8, 0.75),
+        transparent
+      );
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid rgba(253, 216, 53, 0.5);
+      box-shadow: 0 0 18px rgba(253, 216, 53, 0.25);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-text h1 {
+      font-size: 1.2rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+    }
+
+    .brand-text span {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--text-muted);
+    }
+
+    /* Navigation dropdown */
+    .nav-wrapper {
+      position: relative;
+    }
+
+    .nav-toggle {
+      background: transparent;
+      border: 1px solid var(--border-soft);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      backdrop-filter: blur(10px);
+      background: rgba(7, 8, 10, 0.8);
+    }
+
+    .nav-toggle span.icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      min-width: 190px;
+      background: var(--panel-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      display: none;
+      overflow: hidden;
+    }
+
+    .nav-menu.open {
+      display: block;
+    }
+
+    .nav-menu a {
+      display: block;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      background: transparent;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .nav-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .nav-menu a:hover {
+      background: rgba(198, 40, 40, 0.2);
+      color: var(--accent-gold);
+    }
+
+    /* Main hero section */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 96px 6vw 72px; /* top padding accounts for fixed header */
+    }
+
+    .hero {
+      max-width: 980px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+      gap: 40px;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        text-align: center;
+      }
+    }
+
+    .hero-content {
+      background: var(--panel-bg);
+      border-radius: 24px;
+      padding: 32px 30px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(198, 40, 40, 0.14), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(253, 216, 53, 0.06), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--accent-gold);
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 3.1vw, 3rem);
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .hero-title span.red {
+      color: var(--accent-red);
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    .hero-placeholder {
+      border-radius: 18px;
+      border: 1px dashed rgba(255, 255, 255, 0.22);
+      padding: 16px 18px;
+      background: rgba(3, 4, 6, 0.85);
+      font-size: 0.9rem;
+      color: rgba(224, 224, 224, 0.9);
+      text-align: left;
+    }
+
+    @media (max-width: 860px) {
+      .hero-placeholder {
+        text-align: center;
+      }
+    }
+
+    .hero-placeholder span {
+      color: var(--accent-gold);
+      font-weight: 500;
+    }
+
+    /* Visual side: silhouette / atmospheric art suggestion */
+    .hero-visual {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .circle-aura {
+      position: absolute;
+      inset: 14%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 10%, rgba(253, 216, 53, 0.22), transparent 60%),
+        radial-gradient(circle at 70% 90%, rgba(198, 40, 40, 0.5), transparent 60%);
+      filter: blur(1px);
+      opacity: 0.9;
+    }
+
+    .warrior-frame {
+      position: relative;
+      height: 100%;
+      border-radius: 28px;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: radial-gradient(circle at top, rgba(18, 18, 18, 0.96), #060607);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .warrior-inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background:
+        linear-gradient(140deg, rgba(0, 0, 0, 0.9), rgba(24, 24, 24, 0.96)),
+        url("data:image/svg+xml,%3Csvg width='220' height='220' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23c62828'/%3E%3Cstop offset='1' stop-color='%23fdd835'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M20 200 L110 20 L200 200 Z' fill='none' stroke='url(%23g)' stroke-width='3' stroke-linecap='round' stroke-dasharray='6 8' opacity='0.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 70%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 18px 18px 22px;
+    }
+
+    .warrior-silhouette {
+      width: 82%;
+      max-width: 300px;
+      aspect-ratio: 3 / 4;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(253, 216, 53, 0.25), transparent 55%),
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1), transparent 70%),
+        linear-gradient(180deg, #111, #000);
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 26px 40px rgba(0, 0, 0, 0.95),
+        0 0 30px rgba(253, 216, 53, 0.26);
+    }
+
+    .warrior-silhouette::before {
+      /* Stylized chopsticks across the body */
+      content: "";
+      position: absolute;
+      inset: 18% 22%;
+      border-radius: 999px;
+      border: 3px solid rgba(253, 216, 53, 0.5);
+      border-top-color: rgba(198, 40, 40, 0.9);
+      border-left-color: rgba(198, 40, 40, 0.9);
+      transform: rotate(-18deg);
+      mix-blend-mode: screen;
+    }
+
+    .warrior-silhouette::after {
+      /* Suggestion of a hat / helm */
+      content: "";
+      position: absolute;
+      top: 8%;
+      left: 18%;
+      right: 18%;
+      height: 18%;
+      border-radius: 50% 50% 55% 55%;
+      background: linear-gradient(135deg, #1f1f1f, #050505);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.9);
+    }
+
+    .warrior-caption {
+      position: absolute;
+      left: 24px;
+      bottom: 20px;
+      font-size: 0.7rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(176, 190, 197, 0.9);
+    }
+
+    .warrior-caption span {
+      color: var(--accent-gold);
+    }
+
+    /* Footer */
+    footer {
+      padding: 12px 6vw 18px;
+      font-size: 0.8rem;
+      text-align: center;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(176, 190, 197, 0.95);
+      border-top: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), transparent 70%);
+    }
+
+    footer strong {
+      color: var(--accent-red);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Logo spot (upper left) and navigation dropdown (upper right) -->
+  <header>
+    <div class="brand">
+      <!-- Logo placeholder; replace Logo.jpg with your actual file -->
+      <img src="Logo.jpg" alt="Dr. Chopsticks Logo" />
+      <div class="brand-text">
+        <h1>Dr. Chopsticks</h1>
+        <span>Legendary Warrior</span>
+      </div>
+    </div>
+
+    <div class="nav-wrapper">
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span>Menu</span>
+        <span class="icon">▾</span>
+      </button>
+      <nav class="nav-menu" id="navMenu" aria-label="Primary navigation">
+        <!-- Populate as needed -->
+        <a href="#legend">The Legend</a>
+        <a href="#chronicles">Chronicles</a>
+        <a href="#weapons">Weapons</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Splash Area -->
+  <main>
+    <section class="hero">
+      <!-- Text / Blurb side -->
+      <div class="hero-content">
+        <div class="hero-inner">
+          <div class="hero-kicker">Forged in Silence • Honed in Storms</div>
+          <h2 class="hero-title">
+            <span class="red">Dr. Chopsticks</span><br />
+            The Legend with Two Sticks
+          </h2>
+          <p class="hero-subtitle">
+            From moonlit rooftops to the heart of distant battlefields, whispers tell of a warrior who fights with nothing but twin wooden blades—and never loses.
+          </p>
+
+          <!-- Replace this entire block with your blurb text -->
+          <div class="hero-placeholder">
+            <strong>Blurb goes here.</strong><br />
+            Replace this placeholder with your main story or introduction text for
+            <span>Dr. Chopsticks</span>. This is the central narrative that will live
+            in the middle of the page.
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual / Hero artwork side -->
+      <div class="hero-visual">
+        <div class="circle-aura"></div>
+        <div class="warrior-frame">
+          <div class="warrior-inner">
+            <div class="warrior-silhouette"></div>
+            <div class="warrior-caption">
+              Two Sticks. <span>One Legend.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <strong>Two Sticks. One Legend</strong>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.toggle("open");
+    }
+
+    // Optional: close menu on outside click
+    document.addEventListener("click", function (e) {
+      var menu = document.getElementById("navMenu");
+      var toggle = document.querySelector(".nav-toggle");
+      if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+  </script>
+</body>
+</html>
