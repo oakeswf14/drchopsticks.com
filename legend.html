@@ -1,0 +1,417 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dr. Chopsticks – The Legend</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-color: #050608;
+      --accent-red: #c62828;
+      --accent-gold: #fdd835;
+      --text-main: #f5f5f5;
+      --text-muted: #b0bec5;
+      --panel-bg: rgba(12, 12, 16, 0.92);
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #121212 0, #050608 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 6vw;
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 6, 8, 0.98),
+        rgba(5, 6, 8, 0.75),
+        transparent
+      );
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid rgba(253, 216, 53, 0.5);
+      box-shadow: 0 0 18px rgba(253, 216, 53, 0.25);
+    }
+
+    .brand-text h1 {
+      font-size: 1.2rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+    }
+
+    /* Navigation dropdown */
+    .nav-wrapper {
+      position: relative;
+    }
+
+    .nav-toggle {
+      background: rgba(7, 8, 10, 0.8);
+      border: 1px solid var(--border-soft);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-toggle span.icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      min-width: 190px;
+      background: var(--panel-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      display: none;
+      overflow: hidden;
+    }
+
+    .nav-menu.open {
+      display: block;
+    }
+
+    .nav-menu a {
+      display: block;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.18s ease, color 0.18s ease;
+      background: transparent;
+    }
+
+    .nav-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .nav-menu a:hover {
+      background: rgba(198, 40, 40, 0.2);
+      color: var(--accent-gold);
+    }
+
+    /* Main section */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 96px 6vw 72px; /* account for fixed header */
+    }
+
+    .hero {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .hero-content {
+      background: var(--panel-bg);
+      border-radius: 24px;
+      padding: 32px 30px 28px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(198, 40, 40, 0.14), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(253, 216, 53, 0.06), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--accent-gold);
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      line-height: 1.08;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span.red {
+      color: var(--accent-red);
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    .hero-blurb strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-gold);
+    }
+
+    .hero-blurb p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(224, 224, 224, 0.92);
+      margin-bottom: 10px;
+    }
+
+    .hero-blurb p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Image strip for 3 pictures */
+    .legend-gallery {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .legend-photo {
+      position: relative;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: radial-gradient(circle at top, #1a1a1a, #050607);
+      overflow: hidden;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .legend-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .legend-photo span {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      right: 10px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(245, 245, 245, 0.9);
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+    }
+
+    @media (max-width: 720px) {
+      .legend-gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Footer */
+    footer {
+      padding: 12px 6vw 18px;
+      font-size: 0.8rem;
+      text-align: center;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(176, 190, 197, 0.95);
+      border-top: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), transparent 70%);
+    }
+
+    footer strong {
+      color: var(--accent-red);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Logo spot (upper left) and navigation dropdown (upper right) -->
+  <header>
+    <!-- Logo clickable back to main page -->
+    <a href="index.html" class="brand">
+      <img src="images/Logo.jpg" alt="Dr. Chopsticks Logo" />
+      <div class="brand-text">
+        <h1>Dr. Chopsticks</h1>
+      </div>
+    </a>
+
+    <div class="nav-wrapper">
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span>Menu</span>
+        <span class="icon">▾</span>
+      </button>
+      <nav class="nav-menu" id="navMenu" aria-label="Primary navigation">
+        <a href="legend.html#legend" onclick="closeNav()">The Legend</a>
+        <a href="chronicles.html#chronicles" onclick="closeNav()">Chronicles</a>
+        <a href="weapons.html#weapons" onclick="closeNav()">Weapons</a>
+        <a href="contact.html#contact" onclick="closeNav()">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Legend Page Content -->
+  <main>
+    <section class="hero" id="legend">
+      <div class="hero-content">
+        <div class="hero-inner">
+          <div class="hero-kicker">Origins • Ziti • Destiny</div>
+
+          <h2 class="hero-title">
+            <span class="red">The Legend</span><br />
+            Of Dr. Chopsticks
+          </h2>
+
+          <p class="hero-subtitle">
+            In Search of the Cheesiest Ziti
+          </p>
+
+          <div class="hero-blurb">
+            <strong>Legendary Beginnings</strong>
+
+            <p>
+              Long before the whispers of “Dr. Chopsticks” echoed through dimly lit
+              ramen shops and late‑night diners, there was only a wandering figure
+              with an empty bowl and an impossible dream: to find the cheesiest ziti
+              the world had ever known. Legend says he began his journey in a cramped
+              corner booth, notebook in hand, cataloging every baked dish that crossed
+              his path—measuring stretch, melt, and the sacred ratio of sauce to cheese
+              with the precision of a master tactician.
+            </p>
+
+            <p>
+              From hole‑in‑the‑wall trattorias to neon‑washed takeout joints, he roamed
+              from establishment to establishment, slipping in and out like a shadow
+              that smelled faintly of garlic and victory. Some nights he left satisfied;
+              other nights, only more determined. Each forkful was a lesson, each
+              disappointing bite a vow to continue the search.
+            </p>
+
+            <p>
+              Over time, the man and the mission became one. Patrons spoke of a quiet
+              stranger who appeared at closing time, offering only a nod, a pair of
+              chopsticks, and a single, unchanging request:
+              <em>“Your cheesiest ziti. I’ll be the judge.”</em>
+              And thus, the legend of Dr. Chopsticks was born—not from battlefields or
+              bloodshed, but from a relentless, heroic pursuit of the perfect, molten
+              bite.
+            </p>
+          </div>
+
+          <!-- 3-picture gallery (images folder) -->
+          <div class="legend-gallery">
+            <!-- Replace file names with the actual ones you have in /images if needed -->
+            <div class="legend-photo">
+              <img src="images/legend-01.jpg" alt="Early days of Dr. Chopsticks on his ziti quest" />
+              <span>First Bite • The Journey Begins</span>
+            </div>
+            <div class="legend-photo">
+              <img src="images/legend-02.jpg" alt="Dr. Chopsticks roaming between restaurants" />
+              <span>Roaming From Kitchen To Kitchen</span>
+            </div>
+            <div class="legend-photo">
+              <img src="images/legend-03.jpg" alt="The legendary cheesiest ziti tasting" />
+              <span>The Cheesiest Ziti Contenders</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <strong>Two Sticks. One Legend</strong>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.toggle("open");
+    }
+
+    function closeNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.remove("open");
+    }
+
+    // Close menu on outside click
+    document.addEventListener("click", function (e) {
+      var menu = document.getElementById("navMenu");
+      var toggle = document.querySelector(".nav-toggle");
+
+      if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+  </script>
+</body>
+</html>
+```
