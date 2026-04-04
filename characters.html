@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dr. Chopsticks – Characters</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-color: #050608;
+      --accent-red: #c62828;
+      --accent-gold: #fdd835;
+      --text-main: #f5f5f5;
+      --text-muted: #b0bec5;
+      --panel-bg: rgba(12, 12, 16, 0.92);
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #121212 0, #050608 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 6vw;
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 6, 8, 0.98),
+        rgba(5, 6, 8, 0.75),
+        transparent
+      );
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid rgba(253, 216, 53, 0.5);
+      box-shadow: 0 0 18px rgba(253, 216, 53, 0.25);
+    }
+
+    .brand-text h1 {
+      font-size: 1.2rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+    }
+
+    /* Navigation dropdown */
+    .nav-wrapper {
+      position: relative;
+    }
+
+    .nav-toggle {
+      background: rgba(7, 8, 10, 0.8);
+      border: 1px solid var(--border-soft);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-toggle span.icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      min-width: 190px;
+      background: var(--panel-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      display: none;
+      overflow: hidden;
+    }
+
+    .nav-menu.open {
+      display: block;
+    }
+
+    .nav-menu a {
+      display: block;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.18s ease, color 0.18s ease;
+      background: transparent;
+    }
+
+    .nav-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .nav-menu a:hover {
+      background: rgba(198, 40, 40, 0.2);
+      color: var(--accent-gold);
+    }
+
+    /* Main section */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 96px 6vw 72px; /* account for fixed header */
+    }
+
+    .hero {
+      max-width: 960px;
+      width: 100%;
+    }
+
+    .hero-content {
+      background: var(--panel-bg);
+      border-radius: 24px;
+      padding: 32px 30px 28px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(198, 40, 40, 0.14), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(253, 216, 53, 0.06), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--accent-gold);
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      line-height: 1.08;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span.red {
+      color: var(--accent-red);
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    /* Character cards */
+    .characters-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .characters-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .character-card {
+      background: rgba(8, 8, 12, 0.9);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .character-image {
+      position: relative;
+      overflow: hidden;
+      max-height: 260px;
+      background: radial-gradient(circle at top, #1a1a1a, #050607);
+    }
+
+    .character-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .character-body {
+      padding: 16px 18px 18px;
+    }
+
+    .character-name {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-gold);
+      margin-bottom: 4px;
+    }
+
+    .character-tagline {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .character-body p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: rgba(224, 224, 224, 0.92);
+      margin-bottom: 8px;
+    }
+
+    .character-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Visually subtle link styling (for in-text links) */
+    .character-body a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(253, 216, 53, 0.35);
+    }
+
+    .character-body a:hover {
+      color: var(--accent-gold);
+      border-bottom-style: solid;
+    }
+
+    /* Footer */
+    footer {
+      padding: 12px 6vw 18px;
+      font-size: 0.8rem;
+      text-align: center;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(176, 190, 197, 0.95);
+      border-top: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.02), transparent 70%);
+    }
+
+    footer strong {
+      color: var(--accent-red);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Logo spot (upper left) and navigation dropdown (upper right) -->
+  <header>
+    <!-- Logo clickable back to main page -->
+    <a href="index.html" class="brand">
+      <img src="Logo.jpg" alt="Dr. Chopsticks Logo" />
+      <div class="brand-text">
+        <h1>Dr. Chopsticks</h1>
+      </div>
+    </a>
+
+    <div class="nav-wrapper">
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">
+        <span>Menu</span>
+        <span class="icon">▾</span>
+      </button>
+      <nav class="nav-menu" id="navMenu" aria-label="Primary navigation">
+        <a href="index.html#legend" onclick="closeNav()">The Legend</a>
+        <a href="chronicles.html" onclick="closeNav()">Chronicles</a>
+        <a href="weapons.html" onclick="closeNav()">Weapons</a>
+        <a href="characters.html" onclick="closeNav()">Characters</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Characters Page Content -->
+  <main>
+    <section class="hero" id="characters">
+      <div class="hero-content">
+        <div class="hero-inner">
+          <div class="hero-kicker">Allies • Rivals • Puppet Masters</div>
+
+          <h2 class="hero-title">
+            <span class="red">Characters</span><br />
+            Of The Dr. Chopsticks Saga
+          </h2>
+
+          <p class="hero-subtitle">
+            The Heroes, The Frienemies & The One Pulling The Strings
+          </p>
+
+          <div class="characters-grid">
+            <!-- Character 1: Dr. Chopsticks -->
+            <article class="character-card">
+              <div class="character-image">
+                <img
+                  src="images/character-01.jpg"
+                  alt="Dr. Chopsticks standing ready with glowing energy chopsticks"
+                />
+              </div>
+              <div class="character-body">
+                <div class="character-name">Dr. Chopsticks</div>
+                <div class="character-tagline">
+                  Ziti Samurai • Energy Chopstick Wielder • Midnight Binger
+                </div>
+                <p>
+                  Part urban legend, part walking food review, Dr. Chopsticks is a
+                  ninja whose greatest quests almost always end at a buffet line. He
+                  wields twin Energy Chopsticks—ancient weapons forged to defeat evil,
+                  now repurposed to test the structural integrity of baked ziti and
+                  deliver molten cheese with surgical precision.
+                </p>
+                <p>
+                  When he’s not defending alleyways and late‑night diners from
+                  culinary injustice, he’s binge‑watching anime, ranking Pokémon teams,
+                  and meticulously documenting every plate of pasta he encounters.
+                  Equal parts warrior and dork, he is driven by a strange but noble
+                  credo: no villain, and no under‑seasoned sauce, shall go unchallenged.
+                </p>
+              </div>
+            </article>
+
+            <!-- Character 2: The Lanky Leaf -->
+            <article class="character-card">
+              <div class="character-image">
+                <img
+                  src="images/character-02.jpg"
+                  alt="The Lanky Leaf, a tall ninja in green and yellow"
+                />
+              </div>
+              <div class="character-body">
+                <div class="character-name">The Lanky Leaf</div>
+                <div class="character-tagline">
+                  7‑Foot Ninja • Emerald Acrobat • Ride‑Or‑Die Best Friend
+                </div>
+                <p>
+                  Towering at a ridiculous seven feet tall, The Lanky Leaf moves like
+                  a bamboo stalk in a hurricane—flexible, unpredictable, and somehow
+                  always in frame. Clad in green and yellow, he began as Dr. Chopsticks’
+                  rival, clashing in a legendary battle that destroyed half a buffet and
+                  ended in a truce over anime spoilers and shared carbs.
+                </p>
+                <p>
+                  Since high school, the two have been partners in both real crime‑
+                  fighting and its far more important cousin: culinary crime‑fighting.
+                  United by an unapologetic love of anime, Japanese culture, and
+                  over‑complicated battle strategies, The Lanky Leaf uses his absurd
+                  height for everything from rooftop reconnaissance to grabbing snacks
+                  from the top shelf without breaking stride.
+                </p>
+              </div>
+            </article>
+
+            <!-- Character 3: The Matzo Mercenary -->
+            <article class="character-card">
+              <div class="character-image">
+                <img
+                  src="images/character-03.jpg"
+                  alt="The Matzo Mercenary, intense and ready for debate or battle"
+                />
+              </div>
+              <div class="character-body">
+                <div class="character-name">The Matzo Mercenary</div>
+                <div class="character-tagline">
+                  Frenemy For Life • Debate Tank • Carb‑Powered Enigma
+                </div>
+                <p>
+                  The Matzo Mercenary has been both friend and adversary to
+                  Dr. Chopsticks for as long as anyone can remember. Their bond is
+                  built on an unshakable foundation of shared passions—sports,
+                  comfort food, and extremely specific opinions about both—that they
+                  somehow never agree on at the same time.
+                </p>
+                <p>
+                  Proudly Jewish and perpetually argumentative, he doesn’t just
+                  <em>enter</em> debates; he weaponizes them. He’ll take the opposite
+                  side of any topic on principle, just to see if Dr. Chopsticks can
+                  keep up. These long‑running arguments over teams, toppings, and
+                  “what actually counts as canon” have sparked rifts, dramatic
+                  falling‑outs, and at least three separate declarations that their
+                  friendship is “officially over.”
+                </p>
+                <p>
+                  And yet, every time a real threat looms or a truly great meal is on
+                  the line, the Matzo Mercenary shows up—ready to fight at
+                  Dr. Chopsticks’ side, and then immediately argue about who really
+                  won afterward.
+                </p>
+              </div>
+            </article>
+
+            <!-- Character 4: The Mastermind -->
+            <article class="character-card">
+              <div class="character-image">
+                <img
+                  src="images/character-04.jpg"
+                  alt="The Mastermind, shadowy villain lurking in the distance"
+                />
+              </div>
+              <div class="character-body">
+                <div class="character-name">The Mastermind</div>
+                <div class="character-tagline">
+                  Distant Puppeteer • Arcane Investor • Architect Of Chaos
+                </div>
+                <p>
+                  The Mastermind is the unseen hand behind half the chaos in
+                  Dr. Chopsticks’ world. He rarely appears in person; instead, he plays
+                  the others like puppets from afar, nudging rivalries, friendships,
+                  and late‑night battles into place with careful, calculated malice.
+                  To Dr. Chopsticks, The Lanky Leaf, and the Matzo Mercenary, he feels
+                  less like a person and more like a curse the universe forgot to
+                  patch out.
+                </p>
+                <p>
+                  From his remote stronghold, he has quietly amassed a small fortune
+                  through questionable ventures and shady business fronts, many of
+                  which are whispered about only in half‑deleted forum threads and
+                  broken links. Some say his earliest experiments in the arcane were
+                  funded by obscure online storefronts and strange domains like
+                  <a href="https://gypsy-tears.com" target="_blank" rel="noopener noreferrer">
+                    a forgotten “tears and trinkets” shop
+                  </a>,
+                  long since buried in the darker corners of the web.
+                </p>
+                <p>
+                  With that wealth, the Mastermind has pushed beyond conventional
+                  crime into occult experimentation—blending technology, sorcery, and
+                  psychological manipulation. He doesn’t just want power; he wants to
+                  see what happens when you give flawed heroes impossible choices and
+                  watch them crack. For now, he watches the trio from a distance,
+                  pulling strings, setting traps, and waiting for the moment when every
+                  alliance he’s twisted finally snaps.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <strong>Two Sticks. One Legend</strong>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.toggle("open");
+    }
+
+    function closeNav() {
+      var menu = document.getElementById("navMenu");
+      menu.classList.remove("open");
+    }
+
+    // Close menu on outside click
+    document.addEventListener("click", function (e) {
+      var menu = document.getElementById("navMenu");
+      var toggle = document.querySelector(".nav-toggle");
+
+      if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+  </script>
+</body>
+</html>
